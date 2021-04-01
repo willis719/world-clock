@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import TimezoneSelect from 'react-timezone-select'
 import AnalogClock from 'analog-clock-react'
+import Clock from '../components/Clock';
 
 
-export default function Home() {
+export default function Home(props) {
     const [timezone, setTimeZone] = useState('');
-    const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0})
+    
     
     /**
      * 
@@ -13,48 +14,22 @@ export default function Home() {
      */
     const handleSubmit = (e) => {
         e.preventDefault();
-        // display our clock
-        
+        props.setTimezones([...props.timezones, timezone]);
     }
 
 
-    useEffect(() => {
-        // function to update clock
-        const updateClock = () => {
-            // get a time string for the current timezone
-            // this is built into javascript
-          const timeString = new Date().toLocaleString('en-US', {
-            timeZone: timezone.value, // timezone value comes from 
-          });
-          const dateTime = new Date(timeString);
-          setTime({
-              hours: dateTime.getHours(),
-              minutes: dateTime.getMinutes(),
-              seconds: dateTime.getSeconds(),
-          });
-        };
-    
-        // set up an interval and store the reference in a variable
-        const interval = setInterval(() => {
-            // update the clock
-          updateClock();
-        }, 1000);
-        // by returning a function, this is run on clean
-        return () => {
-            // clean the interval
-          clearInterval(interval);
-        };
-      }, [timezone]);
+
+      const tzExists = props.timezones.find((tz) => {
+          return tz.value === timezone.value
+      })
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <TimezoneSelect value={timezone} onChange={setTimeZone} /> 
-                <button type='submit'>Set</button>
+                <button type='submit' disabled={tzExists}>Add</button>
             </form> 
-            { timezone && (
-                <AnalogClock useCustomTime {...time}/>
-            )}
+            <Clock timezone={timezone} />
         </div>
     )
 }
