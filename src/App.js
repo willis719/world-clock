@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
 import Home from './pages/Home';
 import { useState } from 'react';
 import MyTimezones from './pages/MyTimezones';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+
 
 function App() {
   const [timezones, setTimezones] = useState([]);
@@ -11,14 +14,12 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <h1>World Clock</h1>
-        <nav className="navbar">
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="timezones">My Timezones</Link></li>
-          </ul>
-        </nav>
+      <Container fluid className="App">
+        <Navbar>
+          <Navbar.Brand href="/">World Clock</Navbar.Brand>
+          <Nav.Link><Link style={{color: 'white'}} to="/">Home</Link></Nav.Link>
+          <Nav.Link><Link style={{color: 'white'}} to="timezones">My Timezones</Link></Nav.Link>
+        </Navbar>
         <Switch>
           <Route path='/' exact>
             <Home setTimezones={setTimezones} timezones={timezones} />
@@ -27,7 +28,7 @@ function App() {
             <MyTimezones setTimezones={setTimezones} timezones={timezones} />
           </Route>
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 }

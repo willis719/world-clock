@@ -35,7 +35,7 @@ export default function Clock(props) {
     
 
     return (
-        <div>
+        <div style={{marginLeft: '30px'}}>
             { props.timezone && (
                 <AnalogClock useCustomTime {...time}/>
             )}
